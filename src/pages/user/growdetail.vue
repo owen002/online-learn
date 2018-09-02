@@ -50,7 +50,8 @@
         chartData: {
           columns: ['id', 'polity', 'innovate', 'analysis', 'plan', 'communicate'],
           rows: [
-            {id: 1, polity: 22, innovate: 1393, analysis: 1093, plan: 32, communicate: 22}
+            {id: 1, polity: 1, innovate: 1, analysis: 1, plan: 1, communicate: 1},
+            {id: 2, polity: 0, innovate: 0, analysis: 0, plan: 0, communicate: 0}
           ]
         },
         chartData2: {
@@ -72,12 +73,17 @@
         })
       },
       solveDate() {
-        this.chartData.rows[0].polity = this.currentGrow.zznl
-        this.chartData.rows[0].innovate = this.currentGrow.fwqznl
-        this.chartData.rows[0].analysis = this.currentGrow.ywrhnl
-        this.chartData.rows[0].plan = this.currentGrow.jhzxnl
-        this.chartData.rows[0].communicate = this.currentGrow.cxgl
+        this.chartData.rows[0].polity = this.currentGrow.zznlT
+        this.chartData.rows[0].innovate = this.currentGrow.fwqznlT
+        this.chartData.rows[0].analysis = this.currentGrow.ywrhnlT
+        this.chartData.rows[0].plan = this.currentGrow.jhzxnlT
+        this.chartData.rows[0].communicate = this.currentGrow.cxglT
 
+        this.chartData.rows[1].polity = this.currentGrow.zznl
+        this.chartData.rows[1].innovate = this.currentGrow.fwqznl
+        this.chartData.rows[1].analysis = this.currentGrow.ywrhnl
+        this.chartData.rows[1].plan = this.currentGrow.jhzxnl
+        this.chartData.rows[1].communicate = this.currentGrow.cxgl
         //
         for (let i = this.growList.length - 1; i >= 0; i--) {
           let gr = this.growList[i]

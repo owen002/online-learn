@@ -144,6 +144,7 @@
             return
           }
           this.ranking = res.data.rankingVo
+          this.$local.mytotalRanking(res.data.rankingVo)
         })
       },
       historyStudy(type) {

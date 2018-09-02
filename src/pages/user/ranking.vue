@@ -102,7 +102,13 @@
       }
     },
     mounted() {
-      this.findRanking(2)
+      let ranking = this.$local.mytotalRanking()
+      console.log(ranking)
+      if(ranking){
+        this.ranking = ranking
+      }else{
+        this.findRanking(1)
+      }
       this.findTotalRankingList()
       // 校验是否登录
       let userinfo = this.$local.userinfo()

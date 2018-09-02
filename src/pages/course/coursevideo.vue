@@ -57,7 +57,8 @@
         videoId: q.id || '',
         progress: 0,
         vEnd: false,
-        initTime:false
+        initTime: false,
+        storeTime: 0
       }
     },
     computed: {
@@ -88,8 +89,8 @@
         let vid = document.querySelector('video')
         vid.currentTime = sec;
       },
-      canPlay(){
-        if(!this.initTime){
+      canPlay() {
+        if (!this.initTime) {
           // 设置本地视频播放时间
           let time = this.timeStore()
           let storeprogress = this.videoDetail.studyRecord.progress
@@ -164,12 +165,16 @@
         }
       },
       playerReadied(e) {
-        // 给video标签增加属性
         let video = document.querySelector('video')
-        video.setAttribute('x5-playsinline',true)
-        video.setAttribute('playsinline',true)
-        video.setAttribute('webkit-playsinline',true)
-        video.setAttribute('preload','auto')
+        video.setAttribute('x5-video-player-type', 'h5')
+        // video.setAttribute('x5-video-player-fullscreen', false)
+        video.setAttribute('x5-playsinline', true)
+        video.setAttribute('playsinline', true)
+        video.setAttribute('webkit-playsinline', true)
+        video.setAttribute('preload', 'auto')
+        video.setAttribute('x-webkit-airplay', true)
+
+        // 给video标签增加属性
         this.videoTimeInterval = setInterval(() => {
           if (e.readyState() > 0) {
             this.videoTotalTime = e.duration()
