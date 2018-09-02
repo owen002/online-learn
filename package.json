@@ -1,7 +1,7 @@
 {
-  "name": "partonline",
+  "name": "online-learn",
   "version": "1.0.0",
-  "description": "a management project called partonline",
+  "description": "a management project called online-learn",
   "author": "hw47168",
   "private": true,
   "scripts": {
