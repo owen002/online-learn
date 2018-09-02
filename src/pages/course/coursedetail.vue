@@ -15,7 +15,7 @@
       <header>
         讲师：{{videoDetail.teacher}}
       </header>
-      <div class="tech-desc">{{videoDetail.teacherSummary}}</div>
+      <div class="tech-desc" v-html="videoDetail.teacherSummary"></div>
     </section>
     <section class="class-detail-wr">
       <header>
@@ -111,6 +111,7 @@
     }
     .tech-desc {
       color: #909090;
+      white-space: pre-line;
     }
   }
 </style>

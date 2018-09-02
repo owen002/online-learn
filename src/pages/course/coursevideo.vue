@@ -12,6 +12,7 @@
                     @waiting="onPlayerWaiting($event)"
                     @playing="onPlayerPlaying($event)"
                     @timeupdate="onPlayerTimeupdate($event)"
+                    @canplay="canPlay"
                     @ready="playerReadied">
       </video-player>
       <div class="video-title-header">
@@ -56,6 +57,7 @@
         videoId: q.id || '',
         progress: 0,
         vEnd: false,
+        initTime:false
       }
     },
     computed: {
@@ -85,6 +87,23 @@
       updateCurrentTime(sec) {
         let vid = document.querySelector('video')
         vid.currentTime = sec;
+      },
+      canPlay(){
+        if(!this.initTime){
+          // 设置本地视频播放时间
+          let time = this.timeStore()
+          let storeprogress = this.videoDetail.studyRecord.progress
+          if (storeprogress < 1) {
+            let storetime = storeprogress * this.videoDetail.lessonLength
+            this.vCurrentTime = Number(storetime) > Number(time) ? Number(storetime) : Number(time)
+          } else {
+            if (time) {
+              this.vCurrentTime = time
+            }
+          }
+          this.updateCurrentTime(this.vCurrentTime)
+          this.initTime = !this.initTime
+        }
       },
       updateRecord() {
         console.log('update', this.progress)
@@ -155,19 +174,6 @@
           if (e.readyState() > 0) {
             this.videoTotalTime = e.duration()
             clearInterval(this.videoTimeInterval)
-            // 设置本地视频播放时间
-            let time = this.timeStore()
-            let storeprogress = this.videoDetail.studyRecord.progress
-            if (storeprogress < 1) {
-              let storetime = storeprogress * this.videoDetail.lessonLength
-              this.vCurrentTime = Number(storetime) > Number(time) ? Number(storetime) : Number(time)
-            } else {
-              if (time) {
-                this.vCurrentTime = time
-              }
-            }
-            this.updateCurrentTime(this.vCurrentTime)
-            // e.currentTime(this.vCurrentTime)
           }
         }, 500)
       },
