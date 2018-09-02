@@ -87,7 +87,13 @@
       },
       updateCurrentTime(sec) {
         let vid = document.querySelector('video')
+        sec = Math.floor(sec)
         vid.currentTime = sec;
+        if (vid.currentTime != sec) {
+            setTimeout(()=>{
+                this.updateCurrentTime(sec)
+            },1000)
+        }
       },
       canPlay() {
         if (!this.initTime) {
@@ -223,6 +229,7 @@
       width: 60%;
       margin: 15px auto 20px;
     }
+
     .video-title-header {
       padding: 10px 20px;
       border-bottom: 1px solid #e9e9e9;

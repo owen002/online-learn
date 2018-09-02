@@ -67,7 +67,9 @@
 </script>
 
 <style lang="less" scoped>
-
+  article{
+    padding-bottom: 40px;
+  }
   .class-title {
     background-color: #fff;
     .header-title {
