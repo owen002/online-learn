@@ -51,7 +51,8 @@
         },
         scoreRadar: {
           radar: {
-            indicator: []
+            indicator: [],
+            radius: '70%'
           },
           series: [{
             name: '能力值',
@@ -99,9 +100,9 @@
         //
         let scores = [
           {name: '政治能力', max: this.currentGrow.zznlT, value: this.currentGrow.zznl},
-          {name: '服务群众能力', max: this.currentGrow.fwqznlT, value: this.currentGrow.fwqznl},
-          {name: '业务融合能力', max: this.currentGrow.ywrhnlT, value: this.currentGrow.ywrhnl},
-          {name: '计划执行能力', max: this.currentGrow.jhzxnlT, value: this.currentGrow.jhzxnl},
+          {name: '服务群众', max: this.currentGrow.fwqznlT, value: this.currentGrow.fwqznl},
+          {name: '业务融合', max: this.currentGrow.ywrhnlT, value: this.currentGrow.ywrhnl},
+          {name: '计划执行', max: this.currentGrow.jhzxnlT, value: this.currentGrow.jhzxnl},
           {name: '创新管理', max: this.currentGrow.cxglT, value: this.currentGrow.cxgl}
         ]
         this.scoreRadar.radar.indicator = scores.map(({name, max}) => {
@@ -137,7 +138,7 @@
     .grow-chart {
       position: relative;
       background-color: #fff;
-      padding: 20px 20px 0;
+      padding: 20px 0;
       em {
         width: 200px;
         display: block;

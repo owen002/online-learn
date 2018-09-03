@@ -3,10 +3,6 @@
 </template>
 
 <style>
-  .echarts {
-    width: 600px;
-    height: 400px;
-  }
 </style>
 
 <script>
@@ -65,7 +61,7 @@
     data() {
       return {
         lastArea: 0,
-        style: 'width:' + (document.body.clientWidth - 40) + 'px'
+        style: 'height:' + (document.body.clientWidth - 40) + 'px;width:100%;'
       }
     },
     watch: {
