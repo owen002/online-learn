@@ -65,7 +65,7 @@
     data() {
       return {
         lastArea: 0,
-        style: 'width:' + document.body.clientWidth + 'px'
+        style: 'width:' + (document.body.clientWidth - 40) + 'px'
       }
     },
     watch: {
