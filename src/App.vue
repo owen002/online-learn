@@ -32,23 +32,20 @@
       this.$ajax.interceptors.response.use((response) => {
         // response拦截器
         response.res = response.data
+        debugger
         if (response.data && String(response.data.code) == '401') {
           // localStorage.removeItem('usertoken')
           // 去登陆
           let loc = encodeURIComponent(location.href)
 
-          let callback = ()=>{
-            let rF = this.$local.rurlFlag()
-            if(!rF){
-              this.$local.rurlFlag('1')
-              this.$router.push({name: 'login', query: {rurl:loc}})
-            }
+          let callback = () => {
+            this.$router.push({name: 'login', query: {rurl: loc}})
           }
           // 获取用户账号密码
-          let userinfo = this.$local.userinfo()||{}
+          let userinfo = this.$local.userinfo() || {}
           let mobile = userinfo.phone
           let pass = userinfo.password
-          if(mobile && pass){
+          if (mobile && pass) {
             // 自动登录
             this.$model.datasys.login({phone: mobile, pwd: pass}, (res) => {
               if (res.error) {
@@ -62,7 +59,7 @@
               // 缓存用户id
               this.$local.userinfo({user: res.data.user, token})
             })
-          }else{
+          } else {
             callback()
           }
           return
