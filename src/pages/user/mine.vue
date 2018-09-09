@@ -25,7 +25,7 @@
         </div>
       </section>
     </div>
-    <div class="user-header">
+    <div class="user-header"  @click="goZz">
       <div class="d-f">
         <span>组织管理</span>
       </div>
@@ -108,6 +108,11 @@
     },
     components: {bottom},
     methods: {
+      goZz(){
+        this.$router.push({
+          name:'xxzt'
+        })
+      },
       formatTime(sec) {
         let time = util.formatTime(sec)
         return (time.hour ? time.hour + '时' : '') + (time.min ? time.min + '分' : '') + (time.sec ? time.sec + '秒' : '')

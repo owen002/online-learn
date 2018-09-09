@@ -26,6 +26,41 @@
     <section class="back-content">
       {{videoDetail.lessonSummary}}
     </section>
+    <div class="btns-w">
+      <div class="po-rela" @click="gosign">
+        <mu-ripple>
+          <div class="btn-b dt">签到</div>
+        </mu-ripple>
+      </div>
+      <div class="po-rela" @click="goSj">
+        <mu-ripple>
+          <div class="btn-b qd">答题</div>
+        </mu-ripple>
+      </div>
+    </div>
+    <div v-show="signFlag">
+      <div class="back"></div>
+      <div class="sign-wrap">
+        <div class="sign-header">
+          签到成功
+        </div>
+        <div class="sign-cont">
+          <img src="../../assets/img/sign.png" alt="">
+          <div class="sign-ccc">
+            <div class="sign-title">如何开展两学一做</div>
+            <div class="has-bf">
+              已播放
+              <em>11分10秒</em>
+            </div>
+          </div>
+          <div class="btn-confi-sign" @click="contLearn">
+            <mu-ripple>
+              继续学习
+            </mu-ripple>
+          </div>
+        </div>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -58,7 +93,8 @@
         progress: 0,
         vEnd: false,
         initTime: false,
-        storeTime: 0
+        storeTime: 0,
+        signFlag:false
       }
     },
     computed: {
@@ -67,6 +103,15 @@
       }
     },
     methods: {
+      goSj(){
+
+      },
+      gosign(){
+        this.signFlag = true
+      },
+      contLearn(){
+        this.signFlag = false
+      },
       onPlayerPlay() {
         console.log('1')
       },
@@ -90,9 +135,9 @@
         sec = Math.floor(sec)
         vid.currentTime = sec;
         if (vid.currentTime != sec) {
-            setTimeout(()=>{
-                this.updateCurrentTime(sec)
-            },1000)
+          setTimeout(() => {
+            this.updateCurrentTime(sec)
+          }, 1000)
         }
       },
       canPlay() {
@@ -214,6 +259,95 @@
 </script>
 
 <style lang="less" scoped>
+
+  .back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: 0.7;
+  }
+
+  .sign-wrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    border-radius: 5px;
+    background-color: #fff;
+    width: 80%;
+    .sign-header {
+      background-color: #ff473e;
+      color: #fff;
+      font-size: 16px;
+      line-height: 35px;
+      height: 35px;
+      text-align: center;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+    .sign-cont {
+      background-color: #fff;
+      font-size: 14px;
+      img {
+        display: block;
+        width: 45%;
+        margin: 10px auto 20px;
+      }
+      .sign-title {
+        color: #000;
+        font-size: 14px;
+      }
+      .has-bf {
+        color: #888;
+        font-size: 13px;
+        margin: 10px 0;
+      }
+      .sign-ccc {
+        width: 80%;
+        margin: 0 auto;
+      }
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    .btn-confi-sign {
+      border-top: 1px solid #eee;
+      position: relative;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+    }
+
+  }
+
+  .po-rela {
+    position: relative;
+  }
+
+  .btns-w {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    .btn-b {
+      padding: 5px 30px;
+      border: 1px solid #fff;
+      border-radius: 40px;
+      margin: 0 10px;
+    }
+    .dt {
+      color: #fff;
+      border-color: #c33636;
+      background-color: #c33636;
+    }
+    .qd {
+      color: #c33636;
+      background-color: #fff;
+    }
+  }
+
   .video-js {
     width: 100% !important;
   }

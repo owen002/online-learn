@@ -94,6 +94,11 @@ let route = new Router({
       path: '/learning',
       name: 'learning',
       component: (resolve) => require(['@/pages/user/learning'], resolve)
+    },
+    {
+      path: '/xxzt',
+      name: 'xxzt',
+      component: (resolve) => require(['@/pages/xianxiahuodong'], resolve)
     }
   ]
 })

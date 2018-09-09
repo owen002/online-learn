@@ -154,7 +154,7 @@
         border-radius: 20px;
         text-align: center;
         padding: 8px 5px;
-        font-size: 16px;
+        font-size: 14px;
         margin-bottom: 25px;
       }
       .video-wrap-item {
