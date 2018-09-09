@@ -9,7 +9,7 @@ let urlPath = {
   // part: '/' + (isTest ? '' : '') + '/'
   part: '/'
 }
-let baseUrl = isDev ? '/proxy' : (isQa ? '//120.79.76.235:8081' : (isYf ? '//120.79.76.235:8081' : '//120.79.76.235:8081'))
+let baseUrl = isDev ? '/proxy' : (isQa ? '//119.27.162.187:8088' : (isYf ? '//119.27.162.187:8088' : '//119.27.162.187:8088'))
 
 function interceptor(axios) {
   // default timeout
