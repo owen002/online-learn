@@ -28,7 +28,7 @@
             </mu-list-item-title>
             <mu-icon value="keyboard_arrow_right"></mu-icon>
           </mu-list-item>
-          <mu-list-item class="xx-list-item-w" @click="showPeop">
+          <mu-list-item class="xx-list-item-w">
             <mu-list-item-title class="h-auto">
               <div class="xx-info-item">
                 <em>参与人员</em>
@@ -62,9 +62,10 @@
             上传活动图片
           </div>
           <div class="act-cont">
+            <input type="file" id="file_upload" @change="previewImg">
             <div class="xx-textarea add-icon">
-              <div>+请上传图片</div>
-              <img :src="uploadImgSrc" v-show="uploadImgSrc">
+              <img :src="uploadImgSrc" v-if="uploadImgSrc">
+              <div v-else>+请上传图片</div>
             </div>
           </div>
         </mu-list>
@@ -75,6 +76,9 @@
 </template>
 
 <script>
+
+  import jquery from 'jquery'
+  import util from '../util/util'
 
   export default {
     name: 'xianxiahuodong',
@@ -87,24 +91,48 @@
         desc: '',
         uploadImgSrc: '',
         people: [],
-        address:''
+        address: '',
+        uimgurl: ''
       }
     },
     computed: {},
     methods: {
-      uploadFile() {
-        let that = this;
-        wx.chooseImage({
-          count: 1, // 默认9
-          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-          success: function (res) {
-            var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-            if (localIds && localIds[0]) {
-              that.uploadImgSrc = localIds[0]
+      previewImg(e) {
+        let that = this
+        let reader = new FileReader();
+        //获取文件
+        var file = document.querySelector('#file_upload').files[0];
+        var imageType = /^image\//;
+        //是否是图片
+        if (!imageType.test(file.type)) {
+          this.$alert("请选择图片！");
+          return;
+        }
+        //读取完成
+        reader.onload = function (e) {
+          //获取图片dom
+          that.uploadImgSrc = e.currentTarget.result
+          // 上传图片
+          var formData = new FormData();
+          formData.append("file", jquery('#file_upload')[0].files[0]);
+          formData.append("token", localStorage.getItem('usertoken'));
+          jquery.ajax({
+            url: that.$model.datasys.totalPath + 'api/upload',
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              if (data.code === 0) {
+                //上传成功
+                that.uimgurl = data.url
+              }
+            },
+            error: function () {
             }
-          }
-        });
+          });
+        };
+        reader.readAsDataURL(file);
       },
       getPeople() {
         let po = this.$local.people()
@@ -122,6 +150,7 @@
         }
       },
       submit() {
+        let that = this
         if (!this.title) {
           this.$alert('请输入标题')
           return
@@ -139,11 +168,10 @@
           this.$alert('请输入活动地址')
           return
         }
-        let that = this
         let param = {
-          "activityDate": this.date,
+          "activityDate": util.formatDate(this.date,'YYYY-MM-dd hh:mm'),
           "address": this.address,
-          "pictureUrls": '',
+          "pictureUrls": this.uimgurl,
           "remarks": this.desc,
           "title": this.title,
           "userIds": this.member.join(',')
@@ -156,9 +184,7 @@
           this.$alert('提交成功', {
             beforeClose: function () {
               this.close()
-              that.$router.push({
-                name: 'index'
-              })
+              that.$router.back()
             }
           })
         })
@@ -180,6 +206,17 @@
     }
     .act-cont {
       padding: 0 10px;
+      position: relative;
+      input {
+        position: absolute;
+        left: 0;
+        display: block;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 99;
+        opacity: 0;
+      }
     }
     .xx-textarea {
       width: 100%;
@@ -242,6 +279,12 @@
       justify-content: center;
       color: #bbb;
       position: relative;
+      min-height: 90px;
+      height: auto;
+      img {
+        display: block;
+        width: 100%;
+      }
     }
   }
 </style>

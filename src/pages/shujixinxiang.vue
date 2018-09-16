@@ -5,10 +5,17 @@
     </header>
     <section>
       <mu-container class="sj-content">
+
         <mu-text-field v-model="title" placeholder="请输入标题" icon="notes" full-width></mu-text-field>
         <br/>
-        <mu-text-field v-model="content" multi-line :rows="7" icon="comment" placeholder="请输入内容"
+        <mu-text-field class="mu-txt" v-model="content" multi-line :rows="7" icon="comment" placeholder="请输入内容"
                        full-width></mu-text-field>
+
+        <br/>
+        <div class="sj-wrap">
+          <mu-checkbox v-model="nmFlag" value="1"></mu-checkbox>
+          <div class="nm-fl">匿名提交</div>
+        </div>
       </mu-container>
     </section>
     <mu-button large class="submit-btn" color="error" @click="submit">发送</mu-button>
@@ -22,7 +29,8 @@
     data() {
       return {
         title: '',
-        content: ''
+        content: '',
+        nmFlag: []
       }
     },
     methods: {
@@ -36,7 +44,11 @@
           return
         }
         let that = this
-        this.$model.datasys.mailSend({title:this.title,content:this.content}, (res) => {
+        this.$model.datasys.mailSend({
+          title: this.title,
+          content: this.content,
+          type: this.nmFlag.join('') || ''
+        }, (res) => {
           if (res.error) {
             this.$alert(res.error)
             return
@@ -59,6 +71,10 @@
 
 <style lang="less" scoped>
 
+  .mu-txt {
+    margin-bottom: 5px;
+  }
+
   article {
     margin: 0 auto;
     background: #fff;
@@ -68,6 +84,15 @@
       font-size: 16px;
     }
     section {
+      .sj-wrap {
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        color: #7d7d7d;
+        .nm-fl {
+          margin-left: 18px;
+        }
+      }
       .sj-content {
         width: 100%;
         margin: 40px 0 0 -10px;

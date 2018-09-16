@@ -134,6 +134,11 @@ let route = new Router({
       path: '/learnlist',
       name: 'learnlist',
       component: (resolve) => require(['@/pages/user/learnlist'], resolve)
+    },
+    {
+      path: '/mygrowmonth',
+      name: 'mygrowmonth',
+      component: (resolve) => require(['@/pages/user/mygrowmonth'], resolve)
     }
   ]
 })

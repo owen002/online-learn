@@ -1,6 +1,7 @@
 export default function (axios) {
   let totalPath = '//120.79.76.235:8081/'
   let datasys = {
+    totalPath,
     getBanner(param = {}, callback, error) {
       // return axios.get(`part:api/findSpecialList`, param).then((res) => {
       return axios.get(`${totalPath}api/getBanner`, {params: param}).then((res) => {

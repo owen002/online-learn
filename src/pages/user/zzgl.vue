@@ -33,7 +33,9 @@
     },
     methods: {
       gosjtj(){
-
+        this.$router.push({
+          name:'mygrowmonth'
+        })
       },
       goxxhd(){
         this.$router.push({
