@@ -16,8 +16,8 @@
           <span class="tm-title">{{pitem.question}}</span>
         </div>
         <div class="tm-cont">
-          <div class="tm-img">
-            <img src="//img1.mukewang.com/szimg/5b9b4b880001ebc409000300.jpg" alt="">
+          <div class="tm-img" v-if="pitem.imgSrc">
+            <img :src="pitem.imgSrc" alt="">
           </div>
           <div class="tm-ct" v-for="kitem in pitem.ansArr">
             <div class="xx-item">
