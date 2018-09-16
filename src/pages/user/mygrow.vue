@@ -34,6 +34,15 @@
         </timeline>
       </div>
     </section>
+    <section class="my-sorts-data">
+      <div class="class-w-header" @click="goydzj">
+        <div class="class-sub-title">
+          我的月度足迹
+        </div>
+        <mu-ripple></mu-ripple>
+        <mu-icon class="dn" value="keyboard_arrow_right"></mu-icon>
+      </div>
+    </section>
   </article>
 </template>
 
@@ -93,6 +102,11 @@
       }
     },
     methods: {
+      goydzj(){
+          this.$router.push({
+              name:'mygrowmonth'
+          })
+      },
       goDetail() {
         this.$router.push({name: 'growdetail'})
       },
@@ -157,6 +171,7 @@
       margin: 10px 0;
       padding: 10px 0;
       .class-w-header {
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;

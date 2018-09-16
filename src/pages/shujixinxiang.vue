@@ -13,7 +13,7 @@
 
         <br/>
         <div class="sj-wrap">
-          <mu-checkbox v-model="nmFlag" value="1"></mu-checkbox>
+          <mu-checkbox v-model="nmFlag" value="2"></mu-checkbox>
           <div class="nm-fl">匿名提交</div>
         </div>
       </mu-container>
@@ -47,7 +47,7 @@
         this.$model.datasys.mailSend({
           title: this.title,
           content: this.content,
-          type: this.nmFlag.join('') || ''
+          type: this.nmFlag.join('') || '1'
         }, (res) => {
           if (res.error) {
             this.$alert(res.error)

@@ -41,17 +41,18 @@
               {{paper.examName}}
             </div>
             <div class="paper-dd">
-              <em>限时</em>
-              <i>{{paper.costTime}}分钟</i>
               <em>题数</em>
               <i>{{paper.questionNum}}题</i>
               <em>总分</em>
               <i>{{paper.totalScore}}分</i>
             </div>
+            <div class="jzskj" v-if="paper.examDate">
+              考试时间：{{paper.examDate}}
+            </div>
           </div>
           <div class="paper-write has-w">
-            <span v-if="String(paper.status) === '0'">缺考</span>
-            <span v-else>{{paper.examScore}}分</span>
+            <span v-if="String(paper.status) === '2'">缺考</span>
+            <span v-if="String(paper.status) !== '2'">{{paper.examScore}}分</span>
           </div>
         </section>
       </div>
