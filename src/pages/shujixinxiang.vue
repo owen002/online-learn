@@ -47,7 +47,7 @@
         this.$model.datasys.mailSend({
           title: this.title,
           content: this.content,
-          type: this.nmFlag.join('') || ''
+          type: this.nmFlag.join('') || '1'
         }, (res) => {
           if (res.error) {
             this.$alert(res.error)
