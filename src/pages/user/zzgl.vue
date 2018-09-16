@@ -10,7 +10,7 @@
           <!--</mu-list-item-title>-->
           <!--<mu-icon class="dn" value="keyboard_arrow_right"></mu-icon>-->
         <!--</mu-list-item>-->
-        <mu-list-item button class="list-item-w" @click="goxxhd">
+        <mu-list-item button class="list-item-w" @click="goxxhd" v-if="showFlag">
           <mu-list-item-title>
             <div class="info-item">
               <em>线下活动管理</em>
@@ -28,7 +28,8 @@
     name: 'zzgl',
     data() {
       return {
-        userinfo:{}
+        userinfo:{},
+        showFlag:false
       }
     },
     methods: {

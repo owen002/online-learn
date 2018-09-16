@@ -25,7 +25,7 @@
         </div>
       </section>
     </div>
-    <div class="user-header"  @click="goZz">
+    <div class="user-header"  @click="goZz" v-if="showFlag">
       <div class="d-f">
         <span>组织管理</span>
       </div>
@@ -103,7 +103,8 @@
         ranking: {},
         hList: [],
         uhList: [],
-        imgPho: ''
+        imgPho: '',
+        showFlag:false
       }
     },
     components: {bottom},
@@ -200,6 +201,7 @@
       }
       this.userinfo = userinfo.user
       this.imgPho = userinfo.user.sex
+      this.showFlag = this.userinfo.activityRole == 1
     }
   }
 </script>
