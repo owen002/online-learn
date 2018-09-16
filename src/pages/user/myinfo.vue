@@ -170,7 +170,7 @@
     }
     .mu-list {
       padding: 0;
-      margin-top:8px;
+      margin-bottom:8px;
       background-color: #fff;
     }
   }

@@ -1,5 +1,5 @@
 export default function (axios) {
-  let totalPath = '//119.27.162.187:8088/'
+  let totalPath = '//120.79.76.235:8081/'
   let datasys = {
     getBanner(param = {}, callback, error) {
       // return axios.get(`part:api/findSpecialList`, param).then((res) => {
@@ -129,6 +129,50 @@ export default function (axios) {
     },
     findTotalRankingList(param = {}, callback, error) {
       return axios.get(`${totalPath}api/mine/findTotalRankingList`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    getPaperList(param = {}, callback, error) {
+      return axios.get(`${totalPath}api/findExamList`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    getPaperDetail(param = {}, callback, error) {
+      return axios.get(`${totalPath}api/findDetail/${param.id}`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    subPaper(param = {}, callback, error) {
+      // return axios.get(`part:api/findSpecialList`, param).then((res) => {
+      return axios.post(`${totalPath}api/saveExamResult`, param).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    getLearnList(param = {}, callback, error) {
+      return axios.get(`${totalPath}api/getStudyData`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    getAllPeople(param = {}, callback, error) {
+      return axios.get(`${totalPath}api/findUserList`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    subActivity(param = {}, callback, error) {
+      // return axios.get(`part:api/findSpecialList`, param).then((res) => {
+      return axios.post(`${totalPath}api/activityUp`, param).then((res) => {
         callback(res)
       }).catch((err) => {
         error(err)

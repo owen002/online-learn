@@ -16,13 +16,20 @@ let util = {
   formatTime(totalS) {
     totalS = totalS || 0
     let sec = totalS % 60
-    let min = (totalS - sec)/60 % 60
+    let min = (totalS - sec) / 60 % 60
     let hour = (totalS - sec - min * 60) / 3600
     return {
       sec,
       min,
       hour
     }
+  },
+  fstr(s, h, m, d) {
+    let time = this.formatTime(s)
+    let str = (time.hour ? time.hour + (h || '时') : '') +
+      (time.min ? time.min + (m || '分') : '') +
+      (time.sec ? time.sec + (d || '秒') : '')
+    return str
   }
 }
 export default util

@@ -13,7 +13,7 @@
             </div>
           </mu-ripple>
         </div>
-        <div class="header-menu-item">
+        <div class="header-menu-item" @click="goOnline">
           <mu-ripple>
             <div class="menu-wr bo-lef">
               <img src="../assets/img/ceping.png" alt="">
@@ -92,6 +92,17 @@
         </div>
       </div>
     </section>
+    <section class="class-content-w" v-if="studyImg">
+      <div class="class-w-header">
+        <div class="class-sub-title">
+          学习数据库
+        </div>
+      </div>
+      <div class="wz-content" @click="golearn">
+        <img :src="studyImg">
+      </div>
+    </section>
+
     <bottom :currentMenu="'rec'"></bottom>
   </article>
 </template>
@@ -106,11 +117,22 @@
         newList: [],
         videoList: [],
         newsLimit: 5,
-        bannerImg: ''
+        bannerImg: '',
+        studyImg: ''
       }
     },
     components: {bottom},
     methods: {
+      golearn(){
+        this.$router.push({
+          name: 'learnlist'
+        })
+      },
+      goOnline() {
+        this.$router.push({
+          name: 'paper'
+        })
+      },
       goTotalLesson() {
         this.$router.push({
           name: 'courselist'
@@ -130,9 +152,9 @@
           }
         })
       },
-      goSjxx(){
+      goSjxx() {
         this.$router.push({
-          name:'shujixinxiang'
+          name: 'shujixinxiang'
         })
       },
       goVideo(id) {
@@ -154,12 +176,16 @@
         }, (err) => {
         })
       },
-      getBanner() {
-        this.$model.datasys.getBanner({}, (res) => {
+      getBanner(type) {
+        this.$model.datasys.getBanner({type}, (res) => {
           if (res.error) {
             return
           }
-          this.bannerImg = res.data.tcdxBanner.bannerUrl
+          if (type == 1) {
+            this.bannerImg = res.data.tcdxBanner.bannerUrl
+          } else {
+            this.studyImg = res.data.tcdxBanner.bannerUrl
+          }
         }, (err) => {
         })
       },
@@ -178,7 +204,8 @@
     mounted() {
       this.queryList()
       this.queryVideoList()
-      this.getBanner()
+      this.getBanner(1)
+      this.getBanner(2)
     }
   }
 </script>
@@ -275,8 +302,8 @@
         position: relative;
         word-break: break-all;
         line-height: 18px;
-        margin:10px 0;
-        .zt-art-title{
+        margin: 10px 0;
+        .zt-art-title {
 
         }
       }

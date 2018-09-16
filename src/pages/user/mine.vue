@@ -110,7 +110,7 @@
     methods: {
       goZz(){
         this.$router.push({
-          name:'xxzt'
+          name:'zzgl'
         })
       },
       formatTime(sec) {

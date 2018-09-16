@@ -80,7 +80,6 @@
           // 缓存用户id
           this.$local.userinfo({user: res.data.user, token})
           // this.$router.push({name: 'index'})
-          debugger
           if (this.rurl) {
             location.href = decodeURIComponent(this.rurl)
           }else{

@@ -11,7 +11,7 @@
               <div class="xx-info-item">
                 <em>活动标题</em>
                 <p>
-                  <mu-text-field v-model="title"></mu-text-field>
+                  <mu-text-field v-model="title" style="width:100%"></mu-text-field>
                 </p>
               </div>
             </mu-list-item-title>
@@ -19,25 +19,26 @@
           <mu-list-item button class="xx-list-item-w">
             <mu-list-item-title>
               <div class="xx-info-item">
-                <em>活动日期</em>
+                <em>活动时间</em>
                 <p>
                   <mu-date-input v-model="date" container="bottomSheet" underline-color="#fff"
-                                 full-width></mu-date-input>
+                                 full-width type="dateTime" view-type="list"></mu-date-input>
                 </p>
               </div>
             </mu-list-item-title>
             <mu-icon value="keyboard_arrow_right"></mu-icon>
           </mu-list-item>
-          <mu-list-item button class="xx-list-item-w">
-            <mu-list-item-title>
+          <mu-list-item class="xx-list-item-w" @click="showPeop">
+            <mu-list-item-title class="h-auto">
               <div class="xx-info-item">
                 <em>参与人员</em>
                 <p>
-                  <mu-text-field v-model="member"></mu-text-field>
+                  <mu-select multiple chips v-model="member" style="width:100%;">
+                    <mu-option v-for="pe in people" :key="pe.id" :value="pe.id" :label="pe.name"></mu-option>
+                  </mu-select>
                 </p>
               </div>
             </mu-list-item-title>
-            <mu-icon value="keyboard_arrow_right"></mu-icon>
           </mu-list-item>
         </mu-list>
         <mu-list class="m-l">
@@ -45,7 +46,7 @@
             活动地址
           </div>
           <div class="act-cont">
-            <textarea class="xx-textarea"></textarea>
+            <textarea class="xx-textarea" v-model="address"></textarea>
           </div>
         </mu-list>
         <mu-list class="m-l">
@@ -53,7 +54,7 @@
             活动介绍
           </div>
           <div class="act-cont">
-            <textarea class="xx-textarea"></textarea>
+            <textarea class="xx-textarea" v-model="desc"></textarea>
           </div>
         </mu-list>
         <mu-list class="m-l">
@@ -81,10 +82,12 @@
       return {
         title: '',
         date: '',
-        member: '',
+        member: [],
         content: '',
         desc: '',
-        uploadImgSrc: ''
+        uploadImgSrc: '',
+        people: [],
+        address:''
       }
     },
     computed: {},
@@ -97,23 +100,55 @@
           sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
           success: function (res) {
             var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-            if (localIds && localIds[0]){
+            if (localIds && localIds[0]) {
               that.uploadImgSrc = localIds[0]
             }
           }
         });
+      },
+      getPeople() {
+        let po = this.$local.people()
+        if (po) {
+          this.people = po
+        } else {
+          this.$model.datasys.getAllPeople({}, (res) => {
+            if (res.error) {
+              this.$alert(res.error)
+              return
+            }
+            this.people = res.data.list
+            this.$local.people(res.data.list)
+          })
+        }
       },
       submit() {
         if (!this.title) {
           this.$alert('请输入标题')
           return
         }
-        if (!this.content) {
-          this.$alert('请输入内容')
+        if (!this.date) {
+          this.$alert('请输入活动时间')
+          return
+        }
+
+        if (!this.member) {
+          this.$alert('请输入参与人员')
+          return
+        }
+        if (!this.address) {
+          this.$alert('请输入活动地址')
           return
         }
         let that = this
-        this.$model.datasys.mailSend({title: this.title, content: this.content}, (res) => {
+        let param = {
+          "activityDate": this.date,
+          "address": this.address,
+          "pictureUrls": '',
+          "remarks": this.desc,
+          "title": this.title,
+          "userIds": this.member.join(',')
+        }
+        this.$model.datasys.subActivity(param, (res) => {
           if (res.error) {
             this.$alert(res.error)
             return
@@ -130,6 +165,7 @@
       }
     },
     mounted() {
+      this.getPeople()
     }
   }
 </script>
@@ -177,6 +213,8 @@
       background-color: #fff;
     }
     .mu-item {
+      height: auto;
+      min-height: 48px;
       background-color: #fff;
       border-bottom: 1px solid #eaeaea;
       padding: 0 10px;

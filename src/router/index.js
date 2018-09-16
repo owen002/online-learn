@@ -99,6 +99,41 @@ let route = new Router({
       path: '/xxzt',
       name: 'xxzt',
       component: (resolve) => require(['@/pages/xianxiahuodong'], resolve)
+    },
+    {
+      path: '/examquet',
+      name: 'examquet',
+      component: (resolve) => require(['@/pages/exam/examquet'], resolve)
+    },
+    {
+      path: '/paper',
+      name: 'paper',
+      component: (resolve) => require(['@/pages/exam/paper'], resolve)
+    },
+    {
+      path: '/exam',
+      name: 'exam',
+      component: (resolve) => require(['@/pages/exam/exam'], resolve)
+    },
+    {
+      path: '/exam',
+      name: 'exam',
+      component: (resolve) => require(['@/pages/exam/exam'], resolve)
+    },
+    {
+      path: '/examresult',
+      name: 'examresult',
+      component: (resolve) => require(['@/pages/exam/examresult'], resolve)
+    },
+    {
+      path: '/zzgl',
+      name: 'zzgl',
+      component: (resolve) => require(['@/pages/user/zzgl'], resolve)
+    },
+    {
+      path: '/learnlist',
+      name: 'learnlist',
+      component: (resolve) => require(['@/pages/user/learnlist'], resolve)
     }
   ]
 })

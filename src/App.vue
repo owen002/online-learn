@@ -32,7 +32,6 @@
       this.$ajax.interceptors.response.use((response) => {
         // response拦截器
         response.res = response.data
-        debugger
         if (response.data && String(response.data.code) == '401') {
           // localStorage.removeItem('usertoken')
           // 去登陆

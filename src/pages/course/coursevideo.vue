@@ -27,16 +27,8 @@
       {{videoDetail.lessonSummary}}
     </section>
     <div class="btns-w">
-      <div class="po-rela" @click="gosign">
-        <mu-ripple>
-          <div class="btn-b dt">签到</div>
-        </mu-ripple>
-      </div>
-      <div class="po-rela" @click="goSj">
-        <mu-ripple>
-          <div class="btn-b qd">答题</div>
-        </mu-ripple>
-      </div>
+      <mu-button large color="primary" class="btn-w" @click="qd">签到</mu-button>
+      <mu-button large color="error" class="btn-w" @click="dt">答题</mu-button>
     </div>
     <div v-show="signFlag">
       <div class="back"></div>
@@ -50,7 +42,7 @@
             <div class="sign-title">如何开展两学一做</div>
             <div class="has-bf">
               已播放
-              <em>11分10秒</em>
+              <em>{{ftime()}}</em>
             </div>
           </div>
           <div class="btn-confi-sign" @click="contLearn">
@@ -94,22 +86,33 @@
         vEnd: false,
         initTime: false,
         storeTime: 0,
-        signFlag:false
+        signFlag: false
       }
     },
     computed: {
       splitTime() {
         return this.videoTotalTime / 5
+      },
+      yxtime() {
+        let time = 0
+        if (this.videoDetail && this.videoDetail.studyRecord) {
+          let progress = this.videoDetail.studyRecord.progress;
+          time = progress * this.videoDetail.lessonLength
+        }
+        return time
       }
     },
     methods: {
-      goSj(){
+      ftime(){
+        return util.fstr(this.yxtime)
+      },
+      dt() {
 
       },
-      gosign(){
+      qd() {
         this.signFlag = true
       },
-      contLearn(){
+      contLearn() {
         this.signFlag = false
       },
       onPlayerPlay() {
@@ -240,9 +243,7 @@
             return
           }
           let less = res.data.lesson
-          let time = util.formatTime(less.lessonLength || 0)
-          less.studyRecord.timeDesc = (time.hour ? time.hour + '时' : '') + (time.min ? time.min + '分' : '')
-            + (time.sec ? time.sec + '秒' : '')
+          less.studyRecord.timeDesc = util.fstr(less.lessonLength || 0)
           this.videoDetail = res.data.lesson
           this.playerOptions.sources[0].src = this.videoDetail.videoUrl
         })
@@ -259,6 +260,9 @@
 </script>
 
 <style lang="less" scoped>
+  article {
+    padding-bottom: 50px;
+  }
 
   .back {
     position: fixed;
@@ -322,20 +326,16 @@
 
   }
 
-  .po-rela {
-    position: relative;
-  }
-
   .btns-w {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 20px;
-    .btn-b {
-      padding: 5px 30px;
-      border: 1px solid #fff;
-      border-radius: 40px;
-      margin: 0 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .btn-w {
+      flex: 1;
     }
     .dt {
       color: #fff;

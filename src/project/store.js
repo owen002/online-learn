@@ -52,6 +52,10 @@ let store = {
   rurlFlag(val){
     let key = 'vue_local_rurl_Flag'
     return session(key,val)
+  },
+  people(val){
+    let key = 'vue_local_people_key'
+    return session(key,val)
   }
 }
 export default store
