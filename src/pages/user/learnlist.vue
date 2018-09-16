@@ -1,18 +1,18 @@
 <template>
   <article class="my-inf-tc-warp">
     <div class="my-info-item-w">
-      <mu-list class="mu-list-ww">
-        <a :href="l.fileUrl" :download="l.title+l.fileUrl.slice(l.fileUrl.indexOf('.'))" v-for="l in learnList">
-          <mu-list-item button class="list-item-w">
-            <mu-list-item-title>
+      <div class="mu-list-ww">
+        <a :href="l.fileUrl" v-for="l in learnList">
+          <div class="list-item-w">
+            <div class="wrap-l">
               <div class="info-item">
                 <em>{{l.title}}</em>
               </div>
-            </mu-list-item-title>
+            </div>
             <mu-icon class="dn" value="keyboard_arrow_right"></mu-icon>
-          </mu-list-item>
+          </div>
         </a>
-      </mu-list>
+      </div>
     </div>
   </article>
 </template>
@@ -49,10 +49,17 @@
     a, a:active, a:hover {
       text-decoration: none;
     }
-    .mu-list-ww {
+    .mu-list-ww{
+    .wrap-l{
+      flex:1;
+    }
       a {
         .list-item-w {
+          display: flex;
           border-top: 1px solid #f1f1f1;
+          padding:12px 15px;
+          color:#333;
+          background: #fff;
         }
         &:nth-of-type(1) {
           .list-item-w {

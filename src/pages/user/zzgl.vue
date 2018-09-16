@@ -2,14 +2,14 @@
   <article class="my-inf-tc-warp">
     <div class="my-info-item-w">
       <mu-list>
-        <mu-list-item button class="list-item-w" @click="gosjtj">
-          <mu-list-item-title>
-            <div class="info-item">
-              <em>数据统计</em>
-            </div>
-          </mu-list-item-title>
-          <mu-icon class="dn" value="keyboard_arrow_right"></mu-icon>
-        </mu-list-item>
+        <!--<mu-list-item button class="list-item-w" @click="gosjtj">-->
+          <!--<mu-list-item-title>-->
+            <!--<div class="info-item">-->
+              <!--<em>数据统计</em>-->
+            <!--</div>-->
+          <!--</mu-list-item-title>-->
+          <!--<mu-icon class="dn" value="keyboard_arrow_right"></mu-icon>-->
+        <!--</mu-list-item>-->
         <mu-list-item button class="list-item-w" @click="goxxhd">
           <mu-list-item-title>
             <div class="info-item">

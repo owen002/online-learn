@@ -169,7 +169,7 @@
           return
         }
         let param = {
-          "activityDate": util.formatDate(this.date,'YYYY-MM-dd hh:mm'),
+          "activityDate": util.formatDate(this.date,'YYYY-MM-dd hh:mm:ss'),
           "address": this.address,
           "pictureUrls": this.uimgurl,
           "remarks": this.desc,
@@ -198,6 +198,7 @@
 
 <style lang="less">
   .xx-article {
+    width:100%;
     margin: 0 auto;
     padding: 10px;
     font-size: 14px;
