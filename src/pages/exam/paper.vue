@@ -11,7 +11,7 @@
       <!--2015年12月10日-->
       <!--</header>-->
       <div class="paper-wrap need-p" v-show="tabIndex === 0">
-        <section class="paper-cont" @click="goPaper(paper.paperId,paper.id,paper.examName)" v-for="paper in needExam">
+        <section class="paper-cont" @click="goPaper(paper.paperId,paper.id,paper.examName,paper)" v-for="paper in needExam">
           <mu-ripple></mu-ripple>
           <div class="paper-left">
             <div class="paper-title">
@@ -25,7 +25,10 @@
               <em>总分</em>
               <i>{{paper.totalScore}}分</i>
             </div>
-            <div class="jzskj">
+            <div class="jzskj" v-if="nowTime < paper.starttime">
+              开始时间：{{paper.validDateBegin}}
+            </div>
+            <div class="jzskj" v-else>
               截止时间：{{paper.validDateEnd}}
             </div>
           </div>
@@ -72,23 +75,32 @@
       return {
         tabIndex: 0,
         needExam: [],
-        hasExam: []
+        hasExam: [],
+        timeType:'',
+        canJump:false,
+        nowTime:''
       }
     },
     methods: {
+      setNowTime(){
+        this.nowTime = new Date().getTime()
+      },
       caltime(s) {
         let t = util.fstr(s)
         return t
       },
-      goPaper(pid, id, name) {
-        this.$router.push({
-          name: 'exam',
-          query: {
-            pid,
-            id,
-            name
-          }
-        })
+      goPaper(pid, id, name,paper) {
+        let nowD = new Date().getTime()
+        if(nowD > paper.starttime && nowD < paper.endtime){
+          this.$router.push({
+            name: 'exam',
+            query: {
+              pid,
+              id,
+              name
+            }
+          })
+        }
       },
       queryPaper(type) {
         this.$model.datasys.getPaperList({type}, (res) => {
@@ -98,7 +110,15 @@
           }
           if (type === 1) {
             // 待测评
-            this.needExam = res.data.list || []
+            let list = res.data.list || []
+            list.map((r)=>{
+              let starttime = new Date(r.validDateBegin.replace(/\-/g,'\/'))
+              let endtime = new Date(r.validDateEnd.replace(/\-/g,'\/'))
+              r.starttime = starttime.getTime()
+              r.endtime = endtime.getTime()
+            })
+            console.log(list)
+            this.needExam = list
           } else {
             // 已测评
             this.hasExam = res.data.list || []
@@ -107,6 +127,7 @@
       }
     },
     mounted() {
+      this.setNowTime()
       this.queryPaper(1)
       this.queryPaper(2)
     }
