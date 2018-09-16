@@ -11,21 +11,47 @@
         后一月
       </div>
     </div>
-    <section class="my-sorts-data">
+    <section class="my-sorts-data" v-if="activity.length > 0">
       <div class="class-w-header">
         <div class="class-sub-title">
-          成长解读
+          活动
         </div>
       </div>
       <div class="rewards-list">
         <timeline>
-          <timeline-title v-if="growList.length>0" :bg-color="colorArr[0]">
-            <em>{{growList[0].cycle}}</em>
-            <span>得分{{growList[0].reateScore}}分，比上月{{growList[0].differenceScore>=0?'增加':'减少'}}{{Math.abs(growList[0].differenceScore)}}分</span>
-          </timeline-title>
-          <timeline-item v-for="grow,gindex in growList" :bg-color="colorArr[gindex%3]" v-if="gindex > 0">
-            <em>{{grow.cycle}}</em>
-            <span>得分{{grow.reateScore}}分，比上月{{grow.differenceScore>=0?'增加':'减少'}}{{Math.abs(grow.differenceScore)}}分</span>
+          <timeline-item v-for="grow,gindex in activity" :bg-color="colorArr[gindex%3]">
+            <em>{{grow.day}}</em>
+            <span>{{grow.name}}</span>
+          </timeline-item>
+        </timeline>
+      </div>
+    </section>
+    <section class="my-sorts-data" v-if="exam.length > 0">
+      <div class="class-w-header">
+        <div class="class-sub-title">
+          测评
+        </div>
+      </div>
+      <div class="rewards-list">
+        <timeline>
+          <timeline-item v-for="grow,gindex in exam" :bg-color="colorArr[gindex%3]">
+            <em>{{grow.day}}</em>
+            <span>{{grow.name}}</span>
+          </timeline-item>
+        </timeline>
+      </div>
+    </section>
+    <section class="my-sorts-data" v-if="video.length > 0">
+      <div class="class-w-header">
+        <div class="class-sub-title">
+          视频
+        </div>
+      </div>
+      <div class="rewards-list">
+        <timeline>
+          <timeline-item v-for="grow,gindex in video" :bg-color="colorArr[gindex%3]">
+            <em>{{grow.day}}</em>
+            <span>{{grow.name}}</span>
           </timeline-item>
         </timeline>
       </div>
@@ -50,7 +76,11 @@
         growList: [],
         colorArr: ['#91c7ae', '#63869e', '#c23531'],
         currentDate: '',
-        currentDateStr:''
+        currentDateStr:'',
+        activity:[],
+        exam:[],
+        video:[],
+        loading:''
       }
     },
     computed: {},
@@ -58,14 +88,19 @@
       mon(i) {
         this.currentDate.setMonth(this.currentDate.getMonth() + i)
         this.currentDateStr = util.formatDate(this.currentDate, 'YYYY-MM')
+        this.queryGrowth()
       },
       queryGrowth() {
-        this.$model.datasys.growth({}, (res) => {
+        this.loading = this.$loading()
+        this.$model.datasys.getMonthList({type:this.currentDateStr}, (res) => {
+          this.loading.close()
           if (res.error) {
             this.$alert(res.error)
             return
           }
-          this.growList = res.data.list
+          this.activity = res.data.activityFootPrintList
+          this.exam = res.data.examFootPrintList
+          this.video = res.data.videoFootPrintList
         })
       }
     },

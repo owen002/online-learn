@@ -178,7 +178,14 @@ export default function (axios) {
       }).catch((err) => {
         error(err)
       })
-    }
+    },
+    getMonthList(param = {}, callback, error) {
+      return axios.get(`${totalPath}/api/mine/footprint`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
   }
   return datasys
 }
