@@ -11,53 +11,69 @@
       <!--2015年12月10日-->
       <!--</header>-->
       <div class="paper-wrap need-p" v-show="tabIndex === 0">
-        <section class="paper-cont" @click="goPaper(paper.paperId,paper.id,paper.examName,paper)" v-for="paper in needExam">
-          <mu-ripple></mu-ripple>
-          <div class="paper-left">
-            <div class="paper-title">
-              {{paper.examName}}
+        <template v-if="needExam.length > 0">
+          <section class="paper-cont" @click="goPaper(paper.paperId,paper.id,paper.examName,paper)" v-for="paper in needExam">
+            <mu-ripple></mu-ripple>
+            <div class="paper-left">
+              <div class="paper-title">
+                {{paper.examName}}
+              </div>
+              <div class="paper-dd">
+                <em>限时</em>
+                <i>{{caltime(paper.examLength)}}</i>
+                <em>题数</em>
+                <i>{{paper.questionNum}}题</i>
+                <em>总分</em>
+                <i>{{paper.totalScore}}分</i>
+              </div>
+              <div class="jzskj" v-if="nowTime < paper.starttime">
+                开始时间：{{paper.validDateBegin}}
+              </div>
+              <div class="jzskj" v-else>
+                截止时间：{{paper.validDateEnd}}
+              </div>
             </div>
-            <div class="paper-dd">
-              <em>限时</em>
-              <i>{{caltime(paper.examLength)}}</i>
-              <em>题数</em>
-              <i>{{paper.questionNum}}题</i>
-              <em>总分</em>
-              <i>{{paper.totalScore}}分</i>
+            <div class="paper-write">
+              <mu-icon value="launch"></mu-icon>
             </div>
-            <div class="jzskj" v-if="nowTime < paper.starttime">
-              开始时间：{{paper.validDateBegin}}
-            </div>
-            <div class="jzskj" v-else>
-              截止时间：{{paper.validDateEnd}}
-            </div>
+          </section>
+        </template>
+        <div class="n-res" v-else>
+          <img src="../../assets/img/no-res.png" alt="">
+          <div class="n-tit">
+            没有待测评记录
           </div>
-          <div class="paper-write">
-            <mu-icon value="launch"></mu-icon>
-          </div>
-        </section>
+        </div>
       </div>
       <div class="paper-wrap no-need-p" v-show="tabIndex === 1">
-        <section class="paper-cont" v-for="paper in hasExam">
-          <div class="paper-left">
-            <div class="paper-title">
-              {{paper.examName}}
+        <template v-if="hasExam.length > 0">
+          <section class="paper-cont" v-for="paper in hasExam">
+            <div class="paper-left">
+              <div class="paper-title">
+                {{paper.examName}}
+              </div>
+              <div class="paper-dd">
+                <em>题数</em>
+                <i>{{paper.questionNum}}题</i>
+                <em>总分</em>
+                <i>{{paper.totalScore}}分</i>
+              </div>
+              <div class="jzskj" v-if="paper.examDate">
+                考试时间：{{paper.examDate}}
+              </div>
             </div>
-            <div class="paper-dd">
-              <em>题数</em>
-              <i>{{paper.questionNum}}题</i>
-              <em>总分</em>
-              <i>{{paper.totalScore}}分</i>
+            <div class="paper-write has-w">
+              <span v-if="String(paper.status) === '2'">缺考</span>
+              <span v-if="String(paper.status) !== '2'">{{paper.examScore}}分</span>
             </div>
-            <div class="jzskj" v-if="paper.examDate">
-              考试时间：{{paper.examDate}}
-            </div>
+          </section>
+        </template>
+        <div class="n-res" v-else>
+          <img src="../../assets/img/no-res.png" alt="">
+          <div class="n-tit">
+            没有待测评记录
           </div>
-          <div class="paper-write has-w">
-            <span v-if="String(paper.status) === '2'">缺考</span>
-            <span v-if="String(paper.status) !== '2'">{{paper.examScore}}分</span>
-          </div>
-        </section>
+        </div>
       </div>
     </div>
   </article>
@@ -148,6 +164,18 @@
       color: #989898;
       padding: 5px 10px;
       font-size: 12px;
+    }
+    .n-tit{
+      text-align: center;
+      color:#999;
+      margin: 30px 0 10px;
+    }
+    .n-res{
+      img{
+        display: block;
+        margin:80px auto 10px;
+        width:50%;
+      }
     }
     .paper-cont {
       position: relative;
