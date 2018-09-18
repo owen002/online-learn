@@ -180,12 +180,41 @@ export default function (axios) {
       })
     },
     getMonthList(param = {}, callback, error) {
-      return axios.get(`${totalPath}/api/mine/footprint`, {params: param}).then((res) => {
+      return axios.get(`${totalPath}api/mine/footprint`, {params: param}).then((res) => {
         callback(res)
       }).catch((err) => {
         error(err)
       })
     },
+    videoQuestion(param = {}, callback, error) {
+      // return axios.get(`part:api/findSpecialList`, param).then((res) => {
+      return axios.post(`${totalPath}api/video/findQuestions`, param).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    subVideoQuestion(param = {}, callback, error) {
+      return axios.post(`${totalPath}api/video/answerSave`, param).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    checkSingAndExam(param = {}, callback, error) {
+      return axios.get(`${totalPath}api/video/checkSingAndExam`, {params: param}).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    },
+    signVideo(param = {}, callback, error) {
+      return axios.post(`${totalPath}api/video/sign`, param).then((res) => {
+        callback(res)
+      }).catch((err) => {
+        error(err)
+      })
+    }
   }
   return datasys
 }

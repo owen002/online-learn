@@ -28,7 +28,7 @@ let util = {
     let time = this.formatTime(s)
     let str = (time.hour ? time.hour + (h || '时') : '') +
       (time.min ? time.min + (m || '分') : '') +
-      (time.sec ? time.sec + (d || '秒') : '')
+      (time.sec ? Math.floor(time.sec) + (d || '秒') : '')
     return str
   },
   formatDate: function (_tdate, format) {

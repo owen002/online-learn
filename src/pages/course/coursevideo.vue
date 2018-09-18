@@ -27,8 +27,8 @@
       {{videoDetail.lessonSummary}}
     </section>
     <div class="btns-w">
-      <mu-button large color="primary" class="btn-w" @click="qd">签到</mu-button>
-      <mu-button large color="error" class="btn-w" @click="dt">答题</mu-button>
+      <mu-button large color="primary" class="btn-w" @click="qd" v-if="emt.sign">签到</mu-button>
+      <mu-button large color="error" class="btn-w" @click="dt" v-if="emt.exam">答题</mu-button>
     </div>
     <div v-show="signFlag">
       <div class="back"></div>
@@ -46,9 +46,8 @@
             </div>
           </div>
           <div class="btn-confi-sign" @click="contLearn">
-            <mu-ripple>
-              继续学习
-            </mu-ripple>
+            <mu-ripple></mu-ripple>
+            <span>继续学习</span>
           </div>
         </div>
       </div>
@@ -86,7 +85,11 @@
         vEnd: false,
         initTime: false,
         storeTime: 0,
-        signFlag: false
+        signFlag: false,
+        emt: {
+          sign: false,
+          exam: false
+        }
       }
     },
     computed: {
@@ -103,35 +106,45 @@
       }
     },
     methods: {
-      ftime(){
+      querySign() {
+        this.$model.datasys.checkSingAndExam({lessonId:this.videoId}, (res) => {
+          if (res.error) {
+            return
+          }
+          this.emt.sign = res.data.sing||false
+          this.emt.exam = res.data.exam
+        })
+      },
+      ftime() {
         return util.fstr(this.yxtime)
       },
       dt() {
-
+        this.$router.push({
+          name: 'exam',
+          query: {
+            lessionid: this.videoId,
+            name: this.videoDetail.title
+          }
+        })
       },
       qd() {
-        this.signFlag = true
+        this.$model.datasys.signVideo({lessonId:this.videoId}, (res) => {
+          if (res.error) {
+            this.$alert(res.error)
+            return
+          }
+          this.signFlag = true
+        })
       },
       contLearn() {
         this.signFlag = false
-      },
-      onPlayerPlay() {
-        console.log('1')
+        this.querySign()
       },
       onPlayerEnded() {
         this.timeStore(0)
         this.progress = 1
         this.vEnd = true
         this.updateRecord()
-      },
-      onPlayerPause() {
-        console.log('3')
-      },
-      onPlayerWaiting() {
-        console.log('4')
-      },
-      onPlayerPlaying(e) {
-        console.log('5')
       },
       updateCurrentTime(sec) {
         let vid = document.querySelector('video')
@@ -254,6 +267,7 @@
         this.$router.back()
       } else {
         this.queryVideoDetail()
+        this.querySign()
       }
     }
   }
@@ -286,8 +300,8 @@
       background-color: #ff473e;
       color: #fff;
       font-size: 16px;
-      line-height: 35px;
-      height: 35px;
+      line-height: 45px;
+      height: 45px;
       text-align: center;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
@@ -319,11 +333,10 @@
     .btn-confi-sign {
       border-top: 1px solid #eee;
       position: relative;
-      height: 40px;
+      height: 45px;
       text-align: center;
-      line-height: 40px;
+      line-height: 45px;
     }
-
   }
 
   .btns-w {
