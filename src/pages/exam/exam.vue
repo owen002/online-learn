@@ -62,7 +62,8 @@
           </div>
         </div>
         <div class="sign-cont">
-          <img src="../../assets/img/res.png" alt="">
+          <img src="../../assets/img/jb.png" alt="">
+          <div class="right-titt">亲，您本次答对 <span style="color:#ff0000">{{right.length}}</span>道题目</div>
           <div class="btn-confi-sign" @click="goLearn">
             <mu-ripple></mu-ripple>
             <span>继续学习</span>
@@ -469,8 +470,13 @@
       font-size: 14px;
       img {
         display: block;
-        width: 45%;
-        margin: 10px auto 20px;
+        width: 60px;
+        margin: 15px auto;
+      }
+      .right-titt{
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
       }
       border-bottom-right-radius: 5px;
       border-bottom-left-radius: 5px;

@@ -92,7 +92,7 @@
         </div>
       </div>
     </section>
-    <section class="class-content-w" v-if="studyImg">
+    <section class="class-content-w" v-if="studyImg && learnList.length>0">
       <div class="class-w-header">
         <div class="class-sub-title">
           学习数据库
@@ -118,7 +118,8 @@
         videoList: [],
         newsLimit: 5,
         bannerImg: '',
-        studyImg: ''
+        studyImg: '',
+        learnList:''
       }
     },
     components: {bottom},
@@ -199,6 +200,15 @@
           this.videoList = list;
         }, (err) => {
         })
+      },
+      queryLearn() {
+        this.$model.datasys.getLearnList({}, (res) => {
+          if (res.error) {
+            this.$alert(res.error)
+            return
+          }
+          this.learnList = res.data.list
+        })
       }
     },
     mounted() {
@@ -206,6 +216,7 @@
       this.queryVideoList()
       this.getBanner(1)
       this.getBanner(2)
+      this.queryLearn()
     }
   }
 </script>

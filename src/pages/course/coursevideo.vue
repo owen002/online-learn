@@ -27,24 +27,52 @@
       {{videoDetail.lessonSummary}}
     </section>
     <div class="btns-w">
-      <mu-button large color="primary" class="btn-w" @click="qd" v-if="emt.sign">签到</mu-button>
-      <mu-button large color="error" class="btn-w" @click="dt" v-if="emt.exam">答题</mu-button>
+      <mu-button large class="btn-w qd" @click="qd" v-if="videoDetail.sign == 1">签到</mu-button>
+      <mu-button large color="error" class="btn-w" @click="dt" v-if="videoDetail.questionNum > 0">随堂测验</mu-button>
     </div>
     <div v-show="signFlag">
       <div class="back"></div>
-      <div class="sign-wrap">
+      <div class="sign-wrap1">
         <div class="sign-header">
-          签到成功
+          {{!emt.sign?'签到成功':'已签到'}}
         </div>
         <div class="sign-cont">
           <img src="../../assets/img/sign.png" alt="">
           <div class="sign-ccc">
-            <div class="sign-title">如何开展两学一做</div>
-            <div class="has-bf">
-              已播放
-              <em>{{ftime()}}</em>
+            <div class="sign-title">{{videoDetail.title}}</div>
+            <div class="has-bf" v-if="!emt.exam">
+              已播放<em>{{ftime()||'0分钟'}}</em>
+            </div>
+            <div class="has-bf" v-else>
+              签到时间：<em class="b-time">{{emt.signTime}}</em>
             </div>
           </div>
+          <div class="btn-confi-sign" @click="contLearn">
+            <mu-ripple></mu-ripple>
+            <span>继续学习</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-show="signFlag2">
+      <div class="back"></div>
+      <div class="sign-wrap2">
+        <div class="sign-header">
+          <div class="dt-hear">答题结束了</div>
+          <div class="sign-h">
+            <div class="tm-num">
+              <div class="tm-r">答对</div>
+              <div class="tm-n">{{emt.rightans}}</div>
+            </div>
+            <div class="tm-num">
+              <div class="tm-r">答错</div>
+              <div class="tm-n">{{emt.errorans}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="sign-cont">
+          <img src="../../assets/img/jb.png" alt="">
+          <div class="right-titt">亲，您本次答对 <span style="color:#ff0000">{{emt.rightans}}</span>道题目</div>
           <div class="btn-confi-sign" @click="contLearn">
             <mu-ripple></mu-ripple>
             <span>继续学习</span>
@@ -68,6 +96,7 @@
     data() {
       let q = this.$route.query
       return {
+        signFlag2: false,
         videoDetail: {studyRecord: {}},
         playsinline: true,
         playerOptions: {
@@ -88,7 +117,10 @@
         signFlag: false,
         emt: {
           sign: false,
-          exam: false
+          exam: false,
+          signTime: '',
+          rightans: 0,
+          errorans: 0
         }
       }
     },
@@ -107,38 +139,60 @@
     },
     methods: {
       querySign() {
-        this.$model.datasys.checkSingAndExam({lessonId:this.videoId}, (res) => {
+        this.$model.datasys.checkSingAndExam({lessonId: this.videoId}, (res) => {
           if (res.error) {
             return
           }
-          this.emt.sign = res.data.sing||false
-          this.emt.exam = res.data.exam
+          this.emt.sign = !res.data.sing
+          this.emt.exam = !res.data.exam
+          this.emt.signTime = res.data.signDate || ''
+          this.emt.rightans = res.data.examScore
+          this.emt.errorans = (res.data.totalNum - res.data.examScore) || 0
         })
       },
       ftime() {
         return util.fstr(this.yxtime)
       },
       dt() {
-        this.$router.push({
-          name: 'exam',
-          query: {
-            lessionid: this.videoId,
-            name: this.videoDetail.title
-          }
-        })
+        if (this.emt.exam) {
+          this.signFlag2 = true;
+        } else {
+          this.$router.push({
+            name: 'exam',
+            query: {
+              lessionid: this.videoId,
+              name: this.videoDetail.title
+            }
+          })
+        }
       },
       qd() {
-        this.$model.datasys.signVideo({lessonId:this.videoId}, (res) => {
-          if (res.error) {
-            this.$alert(res.error)
-            return
-          }
+        if (this.emt.sign) {
           this.signFlag = true
-        })
+        } else {
+          // 判断是否在有效期
+          let startTime = new Date(this.videoDetail.signBegin.replace(/\-/g, '/'))
+          let endTime = new Date(this.videoDetail.signEnd.replace(/\-/g, '/'))
+          let now = new Date()
+          if (now > startTime && now < endTime) {
+            // 有效期内
+            this.$model.datasys.signVideo({lessonId: this.videoId}, (res) => {
+              this.emt.signTime = util.formatDate(new Date(),'YYYY-MM-dd hh:mm')
+              this.emt.sign = true
+              if (res.error) {
+                this.$alert(res.error)
+                return
+              }
+              this.signFlag = true
+            })
+          } else {
+            this.$alert('已超出签到时间')
+          }
+        }
       },
       contLearn() {
         this.signFlag = false
-        this.querySign()
+        this.signFlag2 = false
       },
       onPlayerEnded() {
         this.timeStore(0)
@@ -174,7 +228,6 @@
         }
       },
       updateRecord() {
-        console.log('update', this.progress)
         if (this.videoDetail.studyRecord.progress < 1 && !this.vEnd) {
           this.$model.datasys.updateVideo({
             progress: this.progress,
@@ -288,7 +341,7 @@
     opacity: 0.7;
   }
 
-  .sign-wrap {
+  .sign-wrap1 {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -322,6 +375,9 @@
         color: #888;
         font-size: 13px;
         margin: 10px 0;
+        .b-time{
+          color:#ff0000;
+        }
       }
       .sign-ccc {
         width: 80%;
@@ -337,6 +393,72 @@
       text-align: center;
       line-height: 45px;
     }
+  }
+
+  .sign-wrap2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    border-radius: 5px;
+    background-color: #fff;
+    width: 80%;
+    .sign-header {
+      background-color: #fb4c4c;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      height: 150px;
+    }
+    .dt-hear {
+      height: 50px;
+      line-height: 50px;
+      color: #fff;
+      text-align: center;
+      margin: 0 auto;
+    }
+    .sign-h {
+      display: flex;
+      justify-content: center;
+    }
+    .tm-num {
+      text-align: center;
+      margin: 0 10%;
+      color: #fff;
+    }
+    .tm-n {
+      height: 40px;
+      background-color: #fff;
+      color: #e65049;
+      border-radius: 4px;
+      line-height: 40px;
+      margin-top: 10px;
+      font-size: 25px;
+      width: 36px;
+    }
+    .sign-cont {
+      background-color: #fff;
+      font-size: 14px;
+      img {
+        display: block;
+        width: 60px;
+        margin: 15px auto;
+      }
+      .right-titt{
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    .btn-confi-sign {
+      border-top: 1px solid #eee;
+      position: relative;
+      height: 45px;
+      text-align: center;
+      line-height: 45px;
+    }
+
   }
 
   .btns-w {
@@ -356,7 +478,7 @@
       background-color: #c33636;
     }
     .qd {
-      color: #c33636;
+      color: #f44336;
       background-color: #fff;
     }
   }
