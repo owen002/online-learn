@@ -49,12 +49,24 @@ let store = {
       return setItem(key, val, -1)
     }
   },
+  us_info(val) {
+    let key = 'vue_us_info_local_' + localStorage.getItem('userid')
+    if (val === undefined) {
+      return getItem(key)
+    } else {
+      return setItem(key, val, -1)
+    }
+  },
   rurlFlag(val){
     let key = 'vue_local_rurl_Flag'
     return session(key,val)
   },
   people(val){
     let key = 'vue_local_people_key'
+    return session(key,val)
+  },
+  hasIn(val){
+    let key = 'vue_local_hasIn_key'
     return session(key,val)
   }
 }

@@ -59,7 +59,6 @@
         this.$router.push({name: 'register'})
       },
       submit() {
-        console.log(123)
         if (!util.checkPhone(this.loginForm.username)) {
           this.$toast.error('请输入正确的手机号')
           return
@@ -79,12 +78,13 @@
           localStorage.setItem('userid', res.data.user.id)
           // 缓存用户id
           this.$local.userinfo({user: res.data.user, token})
+          this.$local.us_info({username: this.loginForm.username, password: this.loginForm.password})
           // this.$router.push({name: 'index'})
           if (this.rurl) {
             location.href = decodeURIComponent(this.rurl)
-          }else{
+          } else {
             this.$router.push({
-              name:'mine'
+              name: 'mine'
             })
           }
         })

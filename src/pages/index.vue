@@ -119,12 +119,12 @@
         newsLimit: 5,
         bannerImg: '',
         studyImg: '',
-        learnList:''
+        learnList: ''
       }
     },
     components: {bottom},
     methods: {
-      golearn(){
+      golearn() {
         this.$router.push({
           name: 'learnlist'
         })
@@ -209,14 +209,47 @@
           }
           this.learnList = res.data.list
         })
-      }
+      },
+      init() {
+        this.queryList()
+        this.queryVideoList()
+        this.getBanner(1)
+        this.getBanner(2)
+        this.queryLearn()
+      },
+      login() {
+        let us = this.$local.us_info() || {}
+        this.$model.datasys.login({phone: us.username, pwd: us.password}, (res) => {
+          if (res.error) {
+            this.$alert(res.error)
+            this.$router.push({
+              name: 'login',
+              query:{
+                rurl: encodeURIComponent(location.href)
+              }
+            })
+            return
+          }
+          let token = res.data.token
+          localStorage.setItem('usertoken', token)
+          localStorage.setItem('userid', res.data.user.id)
+          // 缓存用户id
+          this.$local.userinfo({user: res.data.user, token})
+          this.init()
+        })
+      },
     },
     mounted() {
-      this.queryList()
-      this.queryVideoList()
-      this.getBanner(1)
-      this.getBanner(2)
-      this.queryLearn()
+      // 判断是否是第一次进入
+      let hasin = this.$local.hasIn()
+      console.log('hasin:', hasin)
+      if (hasin) {
+        this.init()
+      } else {
+        // 登录
+        this.login()
+      }
+      this.$local.hasIn('1')
     }
   }
 </script>
