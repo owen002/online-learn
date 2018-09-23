@@ -39,6 +39,7 @@
         </div>
       </section>
     </div>
+
   </article>
 </template>
 <script>

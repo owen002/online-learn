@@ -11,51 +11,63 @@
         后一月
       </div>
     </div>
-    <section class="my-sorts-data" v-if="activity.length > 0">
-      <div class="class-w-header">
-        <div class="class-sub-title">
-          活动
+    <div class="section-wrap">
+      <template v-if="activity.length > 0 || exam.length > 0 ||video.length > 0">
+        <section class="my-sorts-data" v-if="activity.length > 0">
+          <div class="class-w-header">
+            <div class="class-sub-title">
+              活动
+            </div>
+          </div>
+          <div class="rewards-list">
+            <timeline>
+              <timeline-item v-for="grow,gindex in activity" :bg-color="colorArr[gindex%3]">
+                <em>{{grow.day}}</em>
+                <span>{{grow.name}}</span>
+              </timeline-item>
+            </timeline>
+          </div>
+        </section>
+        <section class="my-sorts-data" v-if="exam.length > 0">
+          <div class="class-w-header">
+            <div class="class-sub-title">
+              测评
+            </div>
+          </div>
+          <div class="rewards-list">
+            <timeline>
+              <timeline-item v-for="grow,gindex in exam" :bg-color="colorArr[gindex%3]">
+                <em>{{grow.day}}</em>
+                <span>{{grow.name}}</span>
+              </timeline-item>
+            </timeline>
+          </div>
+        </section>
+        <section class="my-sorts-data" v-if="video.length > 0">
+          <div class="class-w-header">
+            <div class="class-sub-title">
+              视频
+            </div>
+          </div>
+          <div class="rewards-list">
+            <timeline>
+              <timeline-item v-for="grow,gindex in video" :bg-color="colorArr[gindex%3]">
+                <em>{{grow.day}}</em>
+                <span>{{grow.name}}</span>
+              </timeline-item>
+            </timeline>
+          </div>
+        </section>
+      </template>
+      <template v-else>
+        <div class="n-res">
+          <img src="../../assets/img/no-res.png" alt="">
+          <div class="n-tit">
+            本月没有成长记录
+          </div>
         </div>
-      </div>
-      <div class="rewards-list">
-        <timeline>
-          <timeline-item v-for="grow,gindex in activity" :bg-color="colorArr[gindex%3]">
-            <em>{{grow.day}}</em>
-            <span>{{grow.name}}</span>
-          </timeline-item>
-        </timeline>
-      </div>
-    </section>
-    <section class="my-sorts-data" v-if="exam.length > 0">
-      <div class="class-w-header">
-        <div class="class-sub-title">
-          测评
-        </div>
-      </div>
-      <div class="rewards-list">
-        <timeline>
-          <timeline-item v-for="grow,gindex in exam" :bg-color="colorArr[gindex%3]">
-            <em>{{grow.day}}</em>
-            <span>{{grow.name}}</span>
-          </timeline-item>
-        </timeline>
-      </div>
-    </section>
-    <section class="my-sorts-data" v-if="video.length > 0">
-      <div class="class-w-header">
-        <div class="class-sub-title">
-          视频
-        </div>
-      </div>
-      <div class="rewards-list">
-        <timeline>
-          <timeline-item v-for="grow,gindex in video" :bg-color="colorArr[gindex%3]">
-            <em>{{grow.day}}</em>
-            <span>{{grow.name}}</span>
-          </timeline-item>
-        </timeline>
-      </div>
-    </section>
+      </template>
+    </div>
   </article>
 </template>
 
@@ -119,8 +131,20 @@
   }
 
   .my-grow {
+    .n-res{
+      img{
+        display: block;
+        margin:80px auto 10px;
+        width:50%;
+      }
+    }
+    .n-tit{
+      text-align: center;
+      color:#999;
+      margin: 30px 0 10px;
+    }
     height: 100%;
-    background-color: #eaeaea;
+    /*background-color: #eaeaea;*/
     .header-my {
       display: flex;
       text-align: center;

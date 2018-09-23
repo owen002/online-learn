@@ -82,7 +82,7 @@
             <em>答题</em>
             <p>累计<span>{{user.totalQuestion}}</span>题</p>
           </div>
-          <em>准确率 {{user.exactRate * 100}}%</em>
+          <em>准确率 {{Math.floor(user.exactRate * 100)}}%</em>
         </div>
       </div>
     </div>

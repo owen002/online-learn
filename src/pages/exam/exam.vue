@@ -49,7 +49,8 @@
       <div class="back"></div>
       <div class="sign-wrap">
         <div class="sign-header">
-          <div class="dt-hear">答题结束了</div>
+          <div class="dt-hear" v-if="isVideoType">答题结束了</div>
+          <div class="dt-hear" v-else>测评结束了</div>
           <div class="sign-h">
             <div class="tm-num">
               <div class="tm-r">答对</div>
@@ -63,10 +64,13 @@
         </div>
         <div class="sign-cont">
           <img src="../../assets/img/jb.png" alt="">
-          <div class="right-titt">亲，您本次答对 <span style="color:#ff0000">{{right.length}}</span>道题目</div>
+          <div class="right-titt" v-if="isVideoType">亲，您本次答对 <span style="color:#ff0000">{{right.length}}</span> 道题目</div>
+          <div class="right-titt" v-else>亲，您本次测评得分 <span style="color:#ff0000">{{totalScore}}</span> 分</div>
+          <div class="right-titt" v-if="!isVideoType">用时{{timeStr}}</div>
           <div class="btn-confi-sign" @click="goLearn">
             <mu-ripple></mu-ripple>
-            <span>继续学习</span>
+            <span v-if="isVideoType">继续学习</span>
+            <span v-else>返回列表</span>
           </div>
         </div>
       </div>
@@ -96,10 +100,14 @@
         lessionid: q.lessionid,
         right: [],
         error: [],
-        signFlag: false
+        signFlag: false,
+        totalScore:''
       }
     },
     computed: {
+      timeStr(){
+        return util.fstr(this.totalTime)
+      },
       isVideoType() {
         return !!this.$route.query.lessionid
       },
@@ -157,11 +165,7 @@
         if (0 <= (ind + this.currentIndex) <= this.paper.length - 1) {
           // 将答案保存
           this.saveAns()
-          //如果是视频答题 check答案
-          if (this.isVideoType) {
-            this.checkArr()
-          }
-
+          this.checkArr()
           this.currentIndex = this.currentIndex + ind
         }
       },
@@ -194,6 +198,7 @@
         return totalScore
       },
       fsub() {
+        this.ttid && clearInterval(this.ttid)
         let score = this.calScore()
         if (this.isVideoType) {
           this.$model.datasys.subVideoQuestion({lessonId: this.lessionid, examScore: score}, (res) => {
@@ -209,14 +214,9 @@
               this.$alert(res.error)
               return
             }
-            this.$router.push({
-              name: 'examresult',
-              query: {
-                score: score,
-                time: this.totalTime,
-                name: this.name
-              }
-            })
+            //
+            this.signFlag = true
+            this.totalScore = score
           })
         }
       },
@@ -225,9 +225,7 @@
         let that = this
         // 保存最后一题
         this.saveAns()
-        if (this.isVideoType) {
           this.checkArr()
-        }
 
         let hasNoAns = this.paper.filter((r) => {
           return r.selectAns.length <= 0

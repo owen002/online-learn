@@ -5,12 +5,7 @@
                     ref="videoPlayer"
                     :options="playerOptions"
                     customEventName="customstatechangedeventname"
-
-                    @play="onPlayerPlay($event)"
-                    @pause="onPlayerPause($event)"
                     @ended="onPlayerEnded($event)"
-                    @waiting="onPlayerWaiting($event)"
-                    @playing="onPlayerPlaying($event)"
                     @timeupdate="onPlayerTimeupdate($event)"
                     @canplay="canPlay"
                     @ready="playerReadied">
@@ -40,10 +35,7 @@
           <img src="../../assets/img/sign.png" alt="">
           <div class="sign-ccc">
             <div class="sign-title">{{videoDetail.title}}</div>
-            <div class="has-bf" v-if="!emt.exam">
-              已播放<em>{{ftime()||'0分钟'}}</em>
-            </div>
-            <div class="has-bf" v-else>
+            <div class="has-bf">
               签到时间：<em class="b-time">{{emt.signTime}}</em>
             </div>
           </div>

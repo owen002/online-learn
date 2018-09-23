@@ -51,7 +51,10 @@ function interceptor(axios) {
     // 处理post传参
     return config
   }, error => {
-    return Promise.reject(error)
+    console.error(error)
+    if(error){
+      return Promise.reject(error)
+    }
   })
 }
 
