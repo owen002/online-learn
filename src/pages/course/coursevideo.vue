@@ -99,7 +99,6 @@
           width: document.body.clientWidth
         },
         videoTimeInterval: 0,
-        videoTotalTime: 0,
         vCurrentTime: 0,
         videoId: q.id || '',
         progress: 0,
@@ -118,7 +117,7 @@
     },
     computed: {
       splitTime() {
-        return this.videoTotalTime / 5
+        return this.videoDetail.lessonLength / 5
       },
       yxtime() {
         let time = 0
@@ -239,7 +238,7 @@
             this.vCurrentTime = vCurrentTime
             this.timeStore(vCurrentTime)
             //记录视频播放进度
-            this.progress = Math.round(this.vCurrentTime / this.videoTotalTime * 100) / 100
+            this.progress = Math.round(this.vCurrentTime / this.videoDetail.lessonLength * 100) / 100
             this.updateRecord()
           }
         }
@@ -289,7 +288,6 @@
         // 给video标签增加属性
         this.videoTimeInterval = setInterval(() => {
           if (e.readyState() > 0) {
-            this.videoTotalTime = e.duration()
             clearInterval(this.videoTimeInterval)
           }
         }, 500)
