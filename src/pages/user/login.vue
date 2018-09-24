@@ -73,6 +73,7 @@
             this.$alert(res.error)
             return
           }
+          this.$local.hasIn('1')
           let token = res.data.token
           localStorage.setItem('usertoken', token)
           localStorage.setItem('userid', res.data.user.id)

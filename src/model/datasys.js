@@ -1,5 +1,5 @@
 export default function (axios) {
-  let totalPath = '/'
+  let totalPath = '//119.27.162.187:8088/'
 
   let error = (e)=>{console.error(e)}
   let datasys = {
@@ -44,7 +44,7 @@ export default function (axios) {
     getVideoType(param = {}, callback) {
       let id = param.id || ''
       // return axios.get(`part:api/findSpecialList`, param).then((res) => {
-      return axios.get(`${totalPath}/api/video/findTypeList`, {params: param}).then((res) => {
+      return axios.get(`${totalPath}api/video/findTypeList`, {params: param}).then((res) => {
         callback(res)
       }).catch((err) => {
         error(err)
@@ -61,7 +61,7 @@ export default function (axios) {
     },
     // 学习记录
     historyStudy(param = {}, callback) {
-      return axios.post(`${totalPath}/api/video/histroyStudy`, param).then((res) => {
+      return axios.post(`${totalPath}api/video/histroyStudy`, param).then((res) => {
         callback(res)
       }).catch((err) => {
         error(err)

@@ -9,7 +9,7 @@ let urlPath = {
   // part: '/' + (isTest ? '' : '') + '/'
   part: '/'
 }
-let url = '//www.tcycj.com:8088'
+let url = '//119.27.162.187:8088'
 let baseUrl = isDev ? '/proxy' : (isQa ? url : (isYf ? url : url))
 
 function interceptor(axios) {

@@ -249,7 +249,6 @@
         // 登录
         this.login()
       }
-      this.$local.hasIn('1')
     }
   }
 </script>
