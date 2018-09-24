@@ -1,5 +1,5 @@
 export default function (axios) {
-  let totalPath = '//120.79.76.235:8081/'
+  let totalPath = '/'
 
   let error = (e)=>{console.error(e)}
   let datasys = {

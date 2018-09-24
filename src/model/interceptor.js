@@ -9,7 +9,8 @@ let urlPath = {
   // part: '/' + (isTest ? '' : '') + '/'
   part: '/'
 }
-let baseUrl = isDev ? '/proxy' : (isQa ? '//119.27.162.187:8088' : (isYf ? '//119.27.162.187:8088' : '//119.27.162.187:8088'))
+let url = '//www.tcycj.com:8088'
+let baseUrl = isDev ? '/proxy' : (isQa ? url : (isYf ? url : url))
 
 function interceptor(axios) {
   // default timeout
@@ -38,7 +39,6 @@ function interceptor(axios) {
         params._ = new Date().getTime()
       }
     } else {
-      console.log(config)
       let url = config.url, sche = url.indexOf('?') >= 0 ? '&' : '?'
       let paramArr = ['token=' + localStorage.getItem('usertoken') || '']
       let cdata = config.data
@@ -52,7 +52,7 @@ function interceptor(axios) {
     return config
   }, error => {
     console.error(error)
-    if(error){
+    if (error) {
       return Promise.reject(error)
     }
   })
